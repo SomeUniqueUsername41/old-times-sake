@@ -29,11 +29,11 @@
     .result {
       margin-top: 20px;
       padding: 10px;
+      background-color: #555; /* gray background */
       border: 1px solid #ccc;
       border-radius: 3px;
       font-weight: bold;
       text-align: center;
-      background-color: #333; /* dark grey */
     }
   </style>
 </head>
@@ -42,15 +42,14 @@
     <h2>Subtraction Equation Generator</h2>
     <label for="base-number">Base Number:</label>
     <input type="text" id="base-number" placeholder="Enter base number" />
-    <label for="result-number">Resulting Number:</label>
-    <input type="text" id="result-number" placeholder="Enter result (0 to 999)" />
+    <label for="result-number">Resulting Number (0–999):</label>
+    <input type="text" id="result-number" placeholder="Enter result number" />
     <div class="result" id="result"></div>
   </div>
 
   <script>
     function interpolateColor(val) {
-      val = Math.max(0, Math.min(999, val));
-
+      val = Math.max(0, Math.min(999, val)); // Clamp between 0–999
       let r, g, b;
 
       if (val <= 500) {
@@ -75,16 +74,16 @@
 
       if (baseInput.trim() === "" || resultInput.trim() === "" || isNaN(baseInput) || isNaN(resultInput)) {
         resultBox.innerText = "Please enter valid numbers.";
-        resultBox.style.color = "white";
+        resultBox.style.color = "black";
         return;
       }
 
       const base = parseInt(baseInput);
       const result = parseInt(resultInput);
-      const inputNumber = base + result;
+      const total = base + result;
 
       const color = interpolateColor(result);
-      resultBox.innerText = `(${inputNumber} - ${base})%`;
+      resultBox.innerText = `(${total} - ${base})%`;
       resultBox.style.color = color;
     }
 
