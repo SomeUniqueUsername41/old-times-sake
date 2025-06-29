@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Subtraction Equation Colorizer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    input[type="text"] {
+      width: calc(100% - 24px);
+      padding: 12px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Subtraction Equation Generator</h2>
+    <label for="base-number">Base Number:</label>
+    <input type="text" id="base-number" placeholder="Enter base number" />
+    <label for="result-number">Resulting Number:</label>
+    <input type="text" id="result-number" placeholder="Enter result (0 to 999)" />
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    function interpolateColor(val) {
+      val = Math.max(0, Math.min(999, val)); // Clamp between 0 and 999
+
+      let r, g, b;
+
+      if (val <= 500) {
+        // From white (255,255,255) to bright red (255,0,0)
+        const ratio = val / 500;
+        r = 255;
+        g = 255 * (1 - ratio);
+        b = 255 * (1 - ratio);
+      } else {
+        // From bright red (255,0,0) to dark red (128,0,0)
+        const ratio = (val - 500) / 499;
+        r = 255 - (127 * ratio); // from 255 to 128
+        g = 0;
+        b = 0;
+      }
+
+      return `rgb(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)})`;
+    }
+
+    function updateEquation() {
+      const baseInput = document.getElementById("base-number").value.replace(/,/g, "");
+      const resultInput = document.getElementById("result-number").value.replace(/,/g, "");
+      const resultBox = document.getElementById("result");
+
+      if (baseInput.trim() === "" || resultInput.trim() === "" || isNaN(baseInput) || isNaN(resultInput)) {
+        resultBox.innerText = "Please enter valid numbers.";
+        resultBox.style.color = "black";
+        return;
+      }
+
+      const base = parseInt(baseInput);
+      const result = parseInt(resultInput);
+      const inputNumber = base - result;
+
+      const color = interpolateColor(result);
+      resultBox.innerText = `(${base} - ${result}) = ${inputNumber}`;
+      resultBox.style.color = color;
+    }
+
+    document.getElementById("base-number").addEventListener("input", updateEquation);
+    document.getElementById("result-number").addEventListener("input", updateEquation);
+  </script>
+</body>
+</html>
