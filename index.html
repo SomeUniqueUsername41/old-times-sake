@@ -33,6 +33,7 @@
       border-radius: 3px;
       font-weight: bold;
       text-align: center;
+      background-color: #333; /* dark grey */
     }
   </style>
 </head>
@@ -48,20 +49,18 @@
 
   <script>
     function interpolateColor(val) {
-      val = Math.max(0, Math.min(999, val)); // Clamp between 0 and 999
+      val = Math.max(0, Math.min(999, val));
 
       let r, g, b;
 
       if (val <= 500) {
-        // From white (255,255,255) to bright red (255,0,0)
         const ratio = val / 500;
         r = 255;
         g = 255 * (1 - ratio);
         b = 255 * (1 - ratio);
       } else {
-        // From bright red (255,0,0) to dark red (128,0,0)
         const ratio = (val - 500) / 499;
-        r = 255 - (127 * ratio); // from 255 to 128
+        r = 255 - (127 * ratio);
         g = 0;
         b = 0;
       }
@@ -76,16 +75,16 @@
 
       if (baseInput.trim() === "" || resultInput.trim() === "" || isNaN(baseInput) || isNaN(resultInput)) {
         resultBox.innerText = "Please enter valid numbers.";
-        resultBox.style.color = "black";
+        resultBox.style.color = "white";
         return;
       }
 
       const base = parseInt(baseInput);
       const result = parseInt(resultInput);
-      const inputNumber = base - result;
+      const inputNumber = base + result;
 
       const color = interpolateColor(result);
-      resultBox.innerText = `(${base} - ${result}) = ${inputNumber}`;
+      resultBox.innerText = `(${inputNumber} - ${base})%`;
       resultBox.style.color = color;
     }
 
